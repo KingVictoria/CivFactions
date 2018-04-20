@@ -15,22 +15,44 @@ public class Faction {
   FactionHandler fh;
   ArrayList<UUID> members;
   UUID ownerUUID;
+  String name;
 
   /**
-   * Creates a Faction object
+   * Creates a Faction object (if another faction shares this faction's name--defaults to "owner's name" then it will not be created
    * @param owner Player entity creator
    */
   public Faction(Player owner) {
     ownerUUID = owner.getUniqueId();
     members = new ArrayList<>();
     fh = FactionHandler.getInstance();
+    name = owner.getName() + "'s Faction";
+
+    for(Faction faction: fh.factions) if(faction.name.equalsIgnoreCase(name)) return;
+
     fh.factions.add(this);
   } // Faction(Player)
+
+  /**
+   * Creates a Faction object (if another faction shares the desired name then it will not be created)
+   * @param owner Player entity creator
+   * @param name String desired name of faction
+   */
+  public Faction(Player owner, String name) {
+    ownerUUID = owner.getUniqueId();
+    members = new ArrayList<>();
+    fh = FactionHandler.getInstance();
+    this.name = name;
+
+    for(Faction faction: fh.factions) if(faction.name.equalsIgnoreCase(name)) return;
+    
+    fh.factions.add(this);
+  }
 
   /**
    * Creates a Faction Object from serial
    */
   public Faction(Map<String, Object> map) {
+    name = (String) map.get("name");
     ownerUUID = UUID.fromString((String) map.get("owner"));
     members = new ArrayList<>();
     ArrayList<String> serializedMembers = (ArrayList<String>) map.get("members");
@@ -51,6 +73,9 @@ public class Faction {
    */
   public Map<String, Object> serialize() {
     HashMap<String, Object> map = new HashMap<>();
+
+    map.put("name", name);
+    
     map.put("owner", ownerUUID.toString());
     
     ArrayList<String> serializedMembers = new ArrayList<>();
@@ -59,6 +84,23 @@ public class Faction {
     
     return map;
   } // serialize
+
+  /**
+   * Changes the name of this faction
+   * @param newName String to change the name to
+   * @return false if another faction shares the desired name (name will not change)
+   */
+  public boolean changeName(String newName) {
+    for(Faction faction: fh.factions) if(faction.name.equalsIgnoreCase(newName)) return false;
+    name = newName;
+    return true;
+  } // changeName
+
+  /**
+   * Gets the name of this Faction
+   * @return String name
+   */
+  public String getName() { return name; }
 
   /**
    * Returns an ArrayList of OfflinePlayer objects corresponding to the members of this faction

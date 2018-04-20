@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.gmail.therealkingvictoria.factions.FactionHandler;
 import com.gmail.therealkingvictoria.commands.TestCreateCommand;
 import com.gmail.therealkingvictoria.commands.TestDeleteCommand;
+import com.gmail.therealkingvictoria.commands.TestListFacsCommand;
 
 public class CivFactions extends JavaPlugin {
   Plugin plugin;
@@ -21,6 +22,7 @@ public class CivFactions extends JavaPlugin {
 
     getCommand("testcreate").setExecutor(new TestCreateCommand());
     getCommand("testdelete").setExecutor(new TestDeleteCommand());
+    getCommand("testlistfacs").setExecutor(new TestListFacsCommand());
   } // onEnable
   
   public void onDisable() {

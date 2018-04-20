@@ -5,7 +5,10 @@ main: com.gmail.therealkingvictoria.CivFactions
 commands:
  testcreate:
   description: creates a test faction
-  usage: /testcreate
+  usage: /testcreate (name of faction...)
  testdelete:
   description: deletes all factions
   usage: /testdelete
+ testlistfacs:
+  description: lists all factions
+  usage: /testlistfacs

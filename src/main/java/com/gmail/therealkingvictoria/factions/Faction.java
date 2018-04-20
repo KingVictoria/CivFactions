@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
  * The basic unit if CivFactions -- Consists of an owner and a bunch of members
  */
 public class Faction {
+  FactionHandler fh;
   ArrayList<UUID> members;
   UUID ownerUUID;
 
@@ -22,6 +23,8 @@ public class Faction {
   public Faction(Player owner) {
     ownerUUID = owner.getUniqueId();
     members = new ArrayList<>();
+    fh = FactionHandler.getInstance();
+    fh.factions.add(this);
   } // Faction(Player)
 
   /**
@@ -32,7 +35,15 @@ public class Faction {
     members = new ArrayList<>();
     ArrayList<String> serializedMembers = (ArrayList<String>) map.get("members");
     for(String serializedMember: serializedMembers) members.add(UUID.fromString(serializedMember));
+    fh = FactionHandler.getInstance();
   } // Faction(Map<String, String>)
+
+  /**
+   * Deletes this faction
+   */
+  public void delete() {
+    fh.factions.remove(this);
+  } // delete
 
   /**
    * Serializes this Faction to a Map of String to Object

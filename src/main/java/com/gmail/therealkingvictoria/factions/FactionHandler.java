@@ -10,10 +10,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 public class FactionHandler {
-  ArrayList<Faction> factions;
+  public ArrayList<Faction> factions;
+
   Plugin plugin;
   File factionConfigFile;
   FileConfiguration factionConfig;
+
+  private static FactionHandler instance;
 
   /**
    * Creates a FactionHandler object that handles the Factions
@@ -21,8 +24,16 @@ public class FactionHandler {
    */
   public FactionHandler(Plugin plugin) {
     this.plugin = plugin;
-
+    instance = this;
   } // FactionHandler
+
+  /**
+   * Gets the instance of FactionHandler
+   * @return FileHandler instance
+   */
+  public static FactionHandler getInstance() {
+    return instance;
+  } // getInstance
 
   /**
    * Loads factions from factions.yml config file
@@ -34,7 +45,7 @@ public class FactionHandler {
     factions = new ArrayList<>();
 
     ArrayList<Map<String, Object>> serializedFactions = (ArrayList<Map<String, Object>>) factionConfig.get("factions");
-    for(Map<String, Object> map: serializedFactions) factions.add(new Faction(map));
+    if(serializedFactions != null) for(Map<String, Object> map: serializedFactions) factions.add(new Faction(map));
   } // load
 
   /**

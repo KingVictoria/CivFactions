@@ -12,3 +12,6 @@ commands:
  testlistfacs:
   description: lists all factions
   usage: /testlistfacs
+ testlistmem:
+  description: lists the members of a given faction
+  usage: /testlistmem <faction name...>

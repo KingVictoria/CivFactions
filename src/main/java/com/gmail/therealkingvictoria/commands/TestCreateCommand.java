@@ -15,7 +15,7 @@ public class TestCreateCommand implements CommandExecutor {
       if(args.length == 0) fac = new Faction((Player) sender);
       else {
 	String name = args[0];
-	for(int i = 1; i < args.length; i++) name += args[i];
+	for(int i = 1; i < args.length; i++) name += " " + args[i];
 	fac = new Faction((Player) sender, name);
       }
       sender.sendMessage("The Faction of " + fac.getName() + " Created!");

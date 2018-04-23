@@ -27,10 +27,10 @@ public class Estate {
     HashMap<String, Object> map = new HashMap<>();
 
     HashMap<String, Object> location = new HashMap<>();
-    location.put("world", center.getWorld().getName());
-    location.put("x", center.getBlockX());
-    location.put("y", center.getBlockY());
-    location.put("z", center.getBlockZ());
+    location.put("world", signLoc.getWorld().getName());
+    location.put("x", signLoc.getBlockX());
+    location.put("y", signLoc.getBlockY());
+    location.put("z", signLoc.getBlockZ());
     map.put("location", location);
 
     return map;

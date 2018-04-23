@@ -8,10 +8,10 @@ import org.bukkit.Location;
 
 public class Estate {
 
-  Location center;
+  Location signLoc;
   
   public Estate(Location loc) {
-    center = loc;
+    signLoc = loc;
   } // Estate(Location)
 
   public Estate(Map<String, Object> map) {
@@ -20,7 +20,7 @@ public class Estate {
     double x = (int) map.get("x");
     double y = (int) map.get("y");
     double z = (int) map.get("z");
-    center = new Location(Bukkit.getWorld(world), x, y, z);
+    signLoc = new Location(Bukkit.getWorld(world), x, y, z);
   } // Estate(Map<String, Object)
 
   public Map<String, Object> serialize() {

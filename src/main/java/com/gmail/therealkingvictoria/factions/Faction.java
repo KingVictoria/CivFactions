@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import com.gmail.therealkingvictoria.estates.Estate;
+
 /**
  * The basic unit if CivFactions -- Consists of an owner and a bunch of members
  */
@@ -16,6 +18,7 @@ public class Faction {
   ArrayList<UUID> members;
   UUID ownerUUID;
   String name;
+  Estate estate;
 
   /**
    * Creates a Faction object (if another faction shares this faction's name--defaults to "owner's name" then it will not be created
@@ -46,7 +49,7 @@ public class Faction {
     for(Faction faction: fh.factions) if(faction.name.equalsIgnoreCase(name)) return;
     
     fh.factions.add(this);
-  }
+  } // Faction(Player, String)
 
   /**
    * Creates a Faction Object from serial
@@ -58,6 +61,8 @@ public class Faction {
     ArrayList<String> serializedMembers = (ArrayList<String>) map.get("members");
     for(String serializedMember: serializedMembers) members.add(UUID.fromString(serializedMember));
     fh = FactionHandler.getInstance();
+
+    if(map.get("estate") != null) estate = new Estate((HashMap<String, Object>) map.get("estate"));
   } // Faction(Map<String, String>)
 
   /**
@@ -81,6 +86,8 @@ public class Faction {
     ArrayList<String> serializedMembers = new ArrayList<>();
     for(UUID uuid: members) serializedMembers.add(uuid.toString());
     map.put("members", serializedMembers);
+
+    map.put("estate", estate.serialize());
     
     return map;
   } // serialize
@@ -95,6 +102,22 @@ public class Faction {
     name = newName;
     return true;
   } // changeName
+
+  /**
+   * Sets the Estate of a Faction
+   * @param estate Estate to set
+   */
+  public void setEstate(Estate estate) {
+    this.estate = estate;
+  } // setEstate
+
+  /**
+   * Gets the Estate of a Faction
+   * @return Estate of Faction
+   */
+  public Estate getEstate() {
+    return estate;
+  } // getEstate
 
   /**
    * Gets the name of this Faction

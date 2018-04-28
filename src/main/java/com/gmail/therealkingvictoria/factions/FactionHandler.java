@@ -1,6 +1,10 @@
 package com.gmail.therealkingvictoria.factions;
 
+import java.time.LocalDateTime;
+import java.nio.file.Files;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,12 +43,13 @@ public class FactionHandler {
     Set<String> names = factionConfig.getConfigurationSection("factions").getKeys(false);
     if(names != null)
       for(String name: names) {
-	System.out.println(name);
 	Map<String, Object> map = new HashMap<>();
 	for(String reference: factionConfig.getConfigurationSection("factions."+name).getKeys(false)) map.put(reference, factionConfig.get("factions."+name+"."+reference));
 	map.put("name", name);
 	factions.add(new Faction(map));
       } // for
+
+    save();
   } // load
 
   /**
@@ -66,5 +71,19 @@ public class FactionHandler {
     } catch (Exception e) {
       plugin.getLogger().log(Level.SEVERE, "Could not save config to " + factionConfigFile, e);
     }
+
+    backup();
   } // save
+
+  public static void backup() {
+    LocalDateTime now = LocalDateTime.now();
+
+    Path path = Paths.get(plugin.getDataFolder()+"\\backups");
+    try { Files.createDirectories(path); } catch(Exception e) { e.printStackTrace(); return; }
+    
+    Path source = Paths.get(factionConfigFile.getAbsolutePath());
+    Path target = Paths.get(plugin.getDataFolder()+"\\backups\\factions_backup_"+now.getYear()+"_"+now.getMonth()+"_"+now.getDayOfMonth()+"_"+now.getHour()+"_"+now.getMinute()+"_"+now.getSecond()+".yml");
+
+    try { Files.copy(source, target); } catch(Exception e) { e.printStackTrace(); }
+  } // backup
 } // FactionHandler

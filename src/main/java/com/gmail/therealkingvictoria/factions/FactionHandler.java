@@ -1,7 +1,9 @@
 package com.gmail.therealkingvictoria.factions;
 
 import java.io.File;
+import java.util.Set;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -34,16 +36,29 @@ public class FactionHandler {
 
     factions = new ArrayList<>();
 
-    ArrayList<Map<String, Object>> serializedFactions = (ArrayList<Map<String, Object>>) factionConfig.get("factions");
-    if(serializedFactions != null) for(Map<String, Object> map: serializedFactions) factions.add(new Faction(map));
+    Set<String> names = factionConfig.getConfigurationSection("factions").getKeys(false);
+    if(names != null)
+      for(String name: names) {
+	System.out.println(name);
+	Map<String, Object> map = new HashMap<>();
+	for(String reference: factionConfig.getConfigurationSection("factions."+name).getKeys(false)) map.put(reference, factionConfig.get("factions."+name+"."+reference));
+	map.put("name", name);
+	factions.add(new Faction(map));
+      } // for
   } // load
 
   /**
    * Saves factions to factions.yml config file
    */
   public static void save() {
-    ArrayList<Map<String, Object>> serializedFactions = new ArrayList<>();
-    for(Faction faction: factions) serializedFactions.add(faction.serialize());
+    Map<String, Map<String, Object>> serializedFactions = new HashMap<>();
+    for(Faction faction: factions) {
+      String name = faction.getName();
+      Map<String, Object> map = faction.serialize();
+      map.remove("name");
+      serializedFactions.put(name, map);
+    } // for
+
     factionConfig.set("factions", serializedFactions);
     
     try {

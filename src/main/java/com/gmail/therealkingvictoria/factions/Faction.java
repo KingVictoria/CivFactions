@@ -119,7 +119,7 @@ public class Faction {
     for(UUID uuid: members) serializedMembers.add(uuid.toString());
     map.put("members", serializedMembers);
 
-    map.put("estate", estate.serialize());
+    if(estate != null) map.put("estate", estate.serialize());
     
     return map;
   } // serialize

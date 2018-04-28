@@ -9,36 +9,26 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.therealkingvictoria.CivFactions;
+
 public class FactionHandler {
-  public ArrayList<Faction> factions;
+  public static ArrayList<Faction> factions;
 
-  Plugin plugin;
-  File factionConfigFile;
-  FileConfiguration factionConfig;
+  private static Plugin            plugin;
+  private static File              factionConfigFile;
+  private static FileConfiguration factionConfig;
 
-  private static FactionHandler instance;
-
-  /**
-   * Creates a FactionHandler object that handles the Factions
-   * @param plugin Plugin reference var
+  /*
+   * void load() loads factions
+   * void save() saves factions
    */
-  public FactionHandler(Plugin plugin) {
-    this.plugin = plugin;
-    instance = this;
-  } // FactionHandler
-
-  /**
-   * Gets the instance of FactionHandler
-   * @return FileHandler instance
-   */
-  public static FactionHandler getInstance() {
-    return instance;
-  } // getInstance
 
   /**
    * Loads factions from factions.yml config file
    */
-  public void load() {
+  public static void load() {
+    plugin = CivFactions.getInstance();
+    
     factionConfigFile = new File(plugin.getDataFolder(), "factions.yml");
     factionConfig = YamlConfiguration.loadConfiguration(factionConfigFile);
 
@@ -51,7 +41,7 @@ public class FactionHandler {
   /**
    * Saves factions to factions.yml config file
    */
-  public void save() {
+  public static void save() {
     ArrayList<Map<String, Object>> serializedFactions = new ArrayList<>();
     for(Faction faction: factions) serializedFactions.add(faction.serialize());
     factionConfig.set("factions", serializedFactions);

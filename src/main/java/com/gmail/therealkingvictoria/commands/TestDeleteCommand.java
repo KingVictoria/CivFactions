@@ -16,7 +16,7 @@ public class TestDeleteCommand implements CommandExecutor {
     if(sender instanceof Player) {
       new Faction((Player) sender);
       ArrayList<Faction> toDel = new ArrayList<>();
-      for(Faction faction: FactionHandler.getInstance().factions) toDel.add(faction);
+      for(Faction faction: FactionHandler.factions) toDel.add(faction);
       for(Faction faction: toDel) faction.delete();
       sender.sendMessage("Factions Deleted!");
     } // if

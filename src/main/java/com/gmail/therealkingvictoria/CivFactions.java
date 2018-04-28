@@ -10,16 +10,18 @@ import com.gmail.therealkingvictoria.commands.TestListFacsCommand;
 import com.gmail.therealkingvictoria.commands.TestListMemCommand;
 
 public class CivFactions extends JavaPlugin {
-  Plugin plugin;
+  private static Plugin plugin;
 
-  FactionHandler fh;
+  /**
+   * Gets an instance of CivFactions object
+   * @return Plugin CivFactions
+   */
+  public static Plugin getInstance() { return plugin; }
   
   public void onEnable() {
     plugin = this;
 
-    fh = new FactionHandler(plugin);
-
-    fh.load();
+    FactionHandler.load();
 
     getCommand("testcreate").setExecutor(new TestCreateCommand());
     getCommand("testdelete").setExecutor(new TestDeleteCommand());
@@ -28,6 +30,6 @@ public class CivFactions extends JavaPlugin {
   } // onEnable
   
   public void onDisable() {
-    fh.save();
+    FactionHandler.save();
   } // onDisable
 } // CivFactions

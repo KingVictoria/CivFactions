@@ -14,7 +14,7 @@ public class TestListFacsCommand implements CommandExecutor {
   @Override
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if(sender instanceof Player) {
-      for(Faction faction: FactionHandler.getInstance().factions) sender.sendMessage(faction.getName());
+      for(Faction faction: FactionHandler.factions) sender.sendMessage(faction.getName());
     } // if
     return true;
   } // onCommand

@@ -18,7 +18,7 @@ public class TestListMemCommand implements CommandExecutor {
       String query = "";
       for(int i = 0; i < args.length - 1; i++) query += args[i] + " ";
       query += args[args.length - 1];
-      for(Faction faction: FactionHandler.getInstance().factions) {
+      for(Faction faction: FactionHandler.factions) {
 	if(faction.getName().equalsIgnoreCase(query)) {
 	  sender.sendMessage(faction.getName() +"'s Members:");
 	  for(OfflinePlayer op: faction.getMembers()) sender.sendMessage(op.getName());

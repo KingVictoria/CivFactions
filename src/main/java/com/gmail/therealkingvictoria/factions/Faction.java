@@ -14,11 +14,35 @@ import com.gmail.therealkingvictoria.estates.Estate;
  * The basic unit if CivFactions -- Consists of an owner and a bunch of members
  */
 public class Faction {
-  FactionHandler fh;
   ArrayList<UUID> members;
-  UUID ownerUUID;
-  String name;
-  Estate estate;
+  UUID            ownerUUID;
+  String          name;
+  Estate          estate;
+
+  /*
+   * Faction(Player owner)                                 make Faction from Player (owner)
+   * Faction(Player owner, String name)                    make Faction from Player (owner) and String (name)
+   * Faction(Player owner, String name, Estate estate)     make Faction from Player (owner), String (name), and Estate
+   * Faction(Map<String, Object> map)                      make Faction from Map<String, Object> (serialized faction)
+   * 
+   * void                     delete()                     delete Faction
+   *
+   * Map<String, Object>      serialize()                  serialize Faction to Map<String, Object> (serialized faction)
+   * 
+   * boolean                  changeName(String newName)   change the name of the Faction to String newName (return false if unable to change to that name)
+   * String                   getName()                    get the name of the faction as a String
+   * 
+   * void                     setEstate(Estate estate)     set the estate to Estate estate
+   * Estate                   getEstate()                  get the estate Estate
+   * 
+   * ArrayList<OfflinePlayer> getMembers()                 get an ArrayList<OfflinePlayer> (list of members)
+   * boolean                  isMember(Player member)      determine if Player is a member (true if they are)
+   * boolean                  addMember(Player member)     adds Player as a member (returns false if cannot add as a member)
+   * boolean                  removeMember(Player member)  remove Player from membership (returns false if unable to do so)
+   * 
+   * boolean                  setOwner(Player newOwner)    sets the owner to Player (new owner) (returns false if unable to do so)
+   * OfflinePlayer            getOwner()                   gets the OfflinePlayer owner
+   */
 
   /**
    * Creates a Faction object (if another faction shares this faction's name--defaults to "owner's name" then it will not be created
@@ -27,12 +51,11 @@ public class Faction {
   public Faction(Player owner) {
     ownerUUID = owner.getUniqueId();
     members = new ArrayList<>();
-    fh = FactionHandler.getInstance();
     name = owner.getName() + "'s Faction";
 
-    for(Faction faction: fh.factions) if(faction.name.equalsIgnoreCase(name)) return;
+    for(Faction faction: FactionHandler.factions) if(faction.name.equalsIgnoreCase(name)) return;
 
-    fh.factions.add(this);
+    FactionHandler.factions.add(this);
   } // Faction(Player)
 
   /**
@@ -43,13 +66,23 @@ public class Faction {
   public Faction(Player owner, String name) {
     ownerUUID = owner.getUniqueId();
     members = new ArrayList<>();
-    fh = FactionHandler.getInstance();
     this.name = name;
 
-    for(Faction faction: fh.factions) if(faction.name.equalsIgnoreCase(name)) return;
+    for(Faction faction: FactionHandler.factions) if(faction.name.equalsIgnoreCase(name)) return;
     
-    fh.factions.add(this);
+    FactionHandler.factions.add(this);
   } // Faction(Player, String)
+
+  public Faction(Player owner, String name, Estate estate) {
+    ownerUUID = owner.getUniqueId();
+    members = new ArrayList<>();
+    this.name = name;
+    this.estate = estate;
+
+    for(Faction faction: FactionHandler.factions) if(faction.name.equalsIgnoreCase(name)) return;
+
+    FactionHandler.factions.add(this);
+  } // Faction(Player, String, Estate)
 
   /**
    * Creates a Faction Object from serial
@@ -60,7 +93,6 @@ public class Faction {
     members = new ArrayList<>();
     ArrayList<String> serializedMembers = (ArrayList<String>) map.get("members");
     for(String serializedMember: serializedMembers) members.add(UUID.fromString(serializedMember));
-    fh = FactionHandler.getInstance();
 
     if(map.get("estate") != null) estate = new Estate((HashMap<String, Object>) map.get("estate"));
   } // Faction(Map<String, String>)
@@ -69,7 +101,7 @@ public class Faction {
    * Deletes this faction
    */
   public void delete() {
-    fh.factions.remove(this);
+    FactionHandler.factions.remove(this);
   } // delete
 
   /**
@@ -98,7 +130,7 @@ public class Faction {
    * @return false if another faction shares the desired name (name will not change)
    */
   public boolean changeName(String newName) {
-    for(Faction faction: fh.factions) if(faction.name.equalsIgnoreCase(newName)) return false;
+    for(Faction faction: FactionHandler.factions) if(faction.name.equalsIgnoreCase(newName)) return false;
     name = newName;
     return true;
   } // changeName

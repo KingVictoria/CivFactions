@@ -40,7 +40,8 @@ public class FactionHandler {
 
     factions = new ArrayList<>();
 
-    Set<String> names = factionConfig.getConfigurationSection("factions").getKeys(false);
+    Set<String> names;
+    try { names = factionConfig.getConfigurationSection("factions").getKeys(false); } catch (Exception e) { return; }
     if(names != null)
       for(String name: names) {
 	Map<String, Object> map = new HashMap<>();
@@ -83,6 +84,7 @@ public class FactionHandler {
     
     Path source = Paths.get(factionConfigFile.getAbsolutePath());
     Path target = Paths.get(plugin.getDataFolder()+"\\backups\\factions_backup_"+now.getYear()+"_"+now.getMonth()+"_"+now.getDayOfMonth()+"_"+now.getHour()+"_"+now.getMinute()+"_"+now.getSecond()+".yml");
+    if(Files.exists(target)) return; // if its a reload there's a good chance the backup will get doubled in the same second so skip 2nd one
 
     try { Files.copy(source, target); } catch(Exception e) { e.printStackTrace(); }
   } // backup

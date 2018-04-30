@@ -8,7 +8,7 @@ import com.gmail.therealkingvictoria.commands.TestCreateCommand;
 import com.gmail.therealkingvictoria.commands.TestDeleteCommand;
 import com.gmail.therealkingvictoria.commands.TestListFacsCommand;
 import com.gmail.therealkingvictoria.commands.TestListMemCommand;
-import com.gmail.therealkingvictoria.listeners.BlockPlaceListener;
+import com.gmail.therealkingvictoria.listeners.EstateBasePlaceListener;
 
 public class CivFactions extends JavaPlugin {
   private static Plugin plugin;
@@ -24,7 +24,7 @@ public class CivFactions extends JavaPlugin {
 
     FactionHandler.load();
 
-    getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
+    getServer().getPluginManager().registerEvents(new EstateBasePlaceListener(), this);
     
     getCommand("testcreate").setExecutor(new TestCreateCommand());
     getCommand("testdelete").setExecutor(new TestDeleteCommand());

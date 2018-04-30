@@ -73,6 +73,28 @@ public class Faction {
     FactionHandler.factions.add(this);
   } // Faction(Player, String)
 
+  /**
+   * Creates a Faction object (if another faction shares this faction's name then it will not be created--defaults to "owner's name")
+   * @param owner Player entity creator
+   * @param estate Estate of this faction
+   */
+  public Faction(Player owner, Estate estate) {
+    ownerUUID = owner.getUniqueId();
+    members = new ArrayList<>();
+    name = owner.getName() + "'s Faction";
+    this.estate = estate;
+    
+    for(Faction faction: FactionHandler.factions) if(faction.name.equalsIgnoreCase(name)) return;
+
+    FactionHandler.factions.add(this);
+  } // Faction(Player, Estate)
+
+  /**
+   * Creates a Faction object (if another faction shares the desired name then it will not be created) with an Estate
+   * @param owner Player entity creator
+   * @param name String desired name of faction
+   * @param estate Estate of this faction
+   */
   public Faction(Player owner, String name, Estate estate) {
     ownerUUID = owner.getUniqueId();
     members = new ArrayList<>();

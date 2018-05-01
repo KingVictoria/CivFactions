@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.Player;
 
 import com.gmail.therealkingvictoria.estates.Estate;
@@ -116,7 +117,12 @@ public class Faction {
     ArrayList<String> serializedMembers = (ArrayList<String>) map.get("members");
     for(String serializedMember: serializedMembers) members.add(UUID.fromString(serializedMember));
 
-    if(map.get("estate") != null) estate = new Estate((HashMap<String, Object>) map.get("estate"));
+    if(map.get("estate") != null) {
+      MemorySection memoryEstate = (MemorySection) map.get("estate");
+      HashMap<String, Object> serializedEstate = new HashMap<>();
+      for(String key: memoryEstate.getKeys(false)) serializedEstate.put(key, memoryEstate.get(key));
+      estate = new Estate(serializedEstate);
+    }
   } // Faction(Map<String, String>)
 
   /**

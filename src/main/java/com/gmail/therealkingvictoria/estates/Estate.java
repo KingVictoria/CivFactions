@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.MemorySection;
 
 public class Estate {
 
@@ -20,12 +21,7 @@ public class Estate {
   } // Estate(Location)
 
   public Estate(Map<String, Object> map) {
-    HashMap<String, Object> loc = (HashMap<String, Object>) map.get("location");
-    String world = (String) loc.get("world");
-    double x = (int) loc.get("x");
-    double y = (int) loc.get("y");
-    double z = (int) loc.get("z");
-    location = new Location(Bukkit.getWorld(world), x, y, z);
+    location = (Location) map.get("location");
 
     name = (String) map.get("name");
 
@@ -33,13 +29,8 @@ public class Estate {
   } // Estate(Map<String, Object)
 
   public Map<String, Object> serialize() {
-    HashMap<String, Object> map = new HashMap<>();
-
-    HashMap<String, Object> loc = new HashMap<>();
-    loc.put("world", location.getWorld().getName());
-    loc.put("x", location.getBlockX());
-    loc.put("y", location.getBlockY());
-    loc.put("z", location.getBlockZ());
+    Map<String, Object> map = new HashMap<>();
+    
     map.put("location", location);
 
     map.put("name", name);

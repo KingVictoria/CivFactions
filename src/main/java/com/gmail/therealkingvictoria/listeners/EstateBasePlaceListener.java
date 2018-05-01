@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.block.Chest;
 
+import com.gmail.therealkingvictoria.estates.Estate;
 import com.gmail.therealkingvictoria.factions.Faction;
 
 public class EstateBasePlaceListener implements Listener {
@@ -18,6 +19,10 @@ public class EstateBasePlaceListener implements Listener {
     if(name == null) return; // dumb normal chests can suck it
     if(!name.equals(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Estate Base")) return; // if it's not an Estate Base stop here
 
-    // TODO: make new faction with new estate
+    Estate estate = new Estate(e.getPlayer().getName() + "'s Estate", chest.getLocation());
+    Faction faction = new Faction(e.getPlayer(), estate);
+
+    e.getPlayer().sendMessage(ChatColor.YELLOW + "The Faction of " + ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + faction.getName() + ChatColor.YELLOW + " has been created with the estate "
+			      + ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + estate.getName());
   } // onBlockPlace
 } // BlockPlaceListener
